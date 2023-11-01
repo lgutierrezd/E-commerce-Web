@@ -4,11 +4,12 @@
     <div class="row">
       <div v-for="product in products" :key="product._id" class="col-md-3">
         <router-link
-          :to="{ name: 'ProductDetail', params: { id: product._id } }"
+          :to="{ name: 'ProductDetail', params: { id: product.slug } }"
+          class="card-link"
         >
           <div class="card border-white">
             <img
-              class="card-img-top custom-image rounded"
+              class="card-img-top custom-image"
               :src="product.images[0]"
               alt="Producto"
             />
@@ -24,6 +25,9 @@
 </template>
 
 <style>
+.card-link {
+  text-decoration: none;
+}
 .custom-image {
   width: 150px;
   height: 150px;
@@ -42,9 +46,10 @@ export default {
     };
   },
   created() {
+    document.title = `Principal`;
     axios
       .get(
-        "http://localhost:3000/api/v1/products?fields=name,price,images,category,brand,slug,isActive&sort=-price"
+        "http://192.168.100.28:3000/api/v1/products?fields=name,price,images,category,brand,slug,isActive&sort=-price"
       )
       .then((response) => {
         this.products = response.data.data.data;
