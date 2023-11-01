@@ -5,31 +5,38 @@
       <p>No hay elementos en el carrito.</p>
     </div>
     <div v-else>
-      <table>
+      <table class="table">
         <thead>
           <tr>
-            <th></th>
-            <th>Nombre</th>
+            <th>Producto</th>
             <th>Precio</th>
             <th>Cantidad</th>
+            <th>Subtotal</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in cartItems" :key="index">
-            <img v-if="loading" src="" alt="Cargando..." />
-            <img
-              v-else
-              class="custom-image"
-              :src="
-                item.images && item.images.length > 0
-                  ? item.images[0]
-                  : './../assets/cart1.png'
-              "
-              :alt="item.name"
-            />
-            <td>{{ item.name }}</td>
+            <td>
+              <img
+                src="./../assets/trash.png"
+                alt="Eliminar"
+                class="delete-icon"
+                @click="removeItem(index)"
+              />
+              <img
+                class="custom-image"
+                :src="
+                  item.images && item.images.length > 0
+                    ? item.images[0]
+                    : './../assets/cart1.png'
+                "
+                :alt="item.name"
+              />
+              {{ item.name }}
+            </td>
             <td>{{ item.price }}</td>
             <td>{{ item.quantity }}</td>
+            <td>{{ item.quantity * item.price }}</td>
           </tr>
         </tbody>
       </table>
@@ -55,6 +62,12 @@ export default {
       cartItems: {},
     };
   },
+  methods: {
+    removeItem(index) {
+      const product = this.cartItems.splice(index, 1)[0];
+      useCartStore().removeFromCart(product);
+    },
+  },
   computed: {
     cart() {
       return useCartStore();
@@ -62,13 +75,6 @@ export default {
   },
   created() {
     this.cartItems = useCartStore().getCartItems();
-    this.cartItems.forEach((element) => {
-      console.log("element");
-      console.log(element);
-      // element.images.forEach((img) => {
-      //   console.log(img);
-      // });
-    });
   },
   //   computed: {
   //     cartItems() {
