@@ -29,10 +29,20 @@
     <div class="navbar-collapse collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Iniciar Sesión</a>
+          <router-link v-if="!isLoggedIn" to="/login" class="nav-link">
+            <a class="nav-link">Iniciar Sesión</a>
+          </router-link>
+          <router-link v-else to="/myaccount" class="nav-link">
+            <a class="nav-link">Mi Cuenta</a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Registrarse</a>
+          <router-link v-if="!isLoggedIn" to="/signup" class="nav-link">
+            <a class="nav-link">Registrarse</a>
+          </router-link>
+          <router-link v-else to="/" class="nav-link" @click="handleLogout">
+            <a class="nav-link">Cerrar sesion</a>
+          </router-link>
         </li>
         <li class="nav-item">
           <router-link to="/cart" class="nav-link">
@@ -64,6 +74,8 @@
 <script>
 import logo from "@/assets/logo.png";
 import cart from "@/assets/cart.png";
+import { useUserStore } from "@/stores/user";
+
 export default {
   name: "NavBar",
   data() {
@@ -71,6 +83,21 @@ export default {
       logo,
       cart,
     };
+  },
+  computed: {
+    isLoggedIn: {
+      get() {
+        return useUserStore().isLoggedIn;
+      },
+    },
+    user() {
+      return useUserStore();
+    },
+  },
+  methods: {
+    handleLogout() {
+      useUserStore().logout();
+    },
   },
 };
 </script>

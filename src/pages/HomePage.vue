@@ -15,7 +15,9 @@
             />
             <div class="card-body">
               <h5 class="card-title text-left">{{ product.name }}</h5>
-              <p class="card-text text-left">Precio: ${{ product.price }}</p>
+              <p class="card-text text-left">
+                Precio: ${{ formattedNumber(product.price) }}
+              </p>
             </div>
           </div>
         </router-link>
@@ -37,6 +39,7 @@
 
 <script>
 import axios from "axios";
+import { formatNumber } from "@/utils/utils.js";
 
 export default {
   name: "HomePage",
@@ -45,11 +48,16 @@ export default {
       products: [],
     };
   },
+  methods: {
+    formattedNumber(value) {
+      return formatNumber(Number(value));
+    },
+  },
   created() {
     document.title = `Principal`;
     axios
       .get(
-        "http://192.168.100.28:3000/api/v1/products?fields=name,price,images,category,brand,slug,isActive&sort=-price"
+        "/api/v1/products?fields=name,price,images,category,brand,slug,isActive&sort=-price"
       )
       .then((response) => {
         this.products = response.data.data.data;

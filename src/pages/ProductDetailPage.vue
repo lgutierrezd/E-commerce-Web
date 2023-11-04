@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-6">
           <h2>{{ product.name }}</h2>
-          <p>Precio: ${{ product.price }}</p>
+          <p>Precio: ${{ formattedNumber(product.price) }}</p>
           <p v-if="product.stock && product.stock.length > 0">
             Disponibles:
             {{
@@ -43,6 +43,7 @@
 import axios from "axios";
 import { useCartStore } from "@/stores/cart";
 import NotFoundPage from "@/pages/NotFoundPage.vue";
+import { formatNumber } from "@/utils/utils.js";
 
 export default {
   name: "ProductDetailPage",
@@ -57,6 +58,9 @@ export default {
     NotFoundPage,
   },
   methods: {
+    formattedNumber(value) {
+      return formatNumber(Number(value));
+    },
     addToCart() {
       const availableQuantity =
         this.product.stock[0] && this.product.stock[0].quantity;
@@ -96,7 +100,7 @@ export default {
     const slug = this.$route.params.id;
 
     axios
-      .get(`http://192.168.100.28:3000/api/v1/products/${slug}`)
+      .get(`/api/v1/products/${slug}`)
       .then((response) => {
         this.product = response.data.data.data;
         if (response.data.status === "success") {
