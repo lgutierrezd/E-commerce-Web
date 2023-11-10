@@ -1,63 +1,50 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand">
-      <router-link to="/" class="nav-link">
-        <img :src="logo" alt="Logo" class="nav-bar-logo" />
-      </router-link>
-      <!-- Enlace al inicio (home) -->
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    ></button>
-    <div class="container">
-      <form class="d-flex mx-auto" role="search">
-        <input
-          class="custom-search-input rounded me-2"
-          type="search"
-          placeholder="Estoy buscando..."
-          aria-label="Search"
-        />
-        <button class="btn btn-primary" type="submit">Buscar</button>
-      </form>
-    </div>
-    <div class="navbar-collapse collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <router-link v-if="!isLoggedIn" to="/login" class="nav-link">
-            <a class="nav-link">Iniciar Sesión</a>
+  <v-app-bar app>
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <router-link to="/">
+      <v-img class="nav-bar-logo" :src="logo" alt="Logo"></v-img>
+    </router-link>
+    <v-spacer></v-spacer>
+    <v-text-field
+      v-model="searchInput"
+      label="Estoy buscando..."
+      class="custom-search-input"
+      @keyup.enter="searchProducts"
+      append-inner-icon="mdi-map-marker"
+    ></v-text-field>
+    <v-spacer></v-spacer>
+    <v-card>
+      <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="end">
+        <v-tab :value="2" @click="goToCart" :active="isRouteActive('/cart')">
+          <router-link to="/cart">
+            <v-img class="cart" :src="cart" alt="Cart"></v-img>
           </router-link>
-          <router-link v-else to="/myaccount" class="nav-link">
-            <a class="nav-link">Mi Cuenta</a>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link v-if="!isLoggedIn" to="/signup" class="nav-link">
-            <a class="nav-link">Registrarse</a>
-          </router-link>
-          <router-link v-else to="/" class="nav-link" @click="handleLogout">
-            <a class="nav-link">Cerrar sesion</a>
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/cart" class="nav-link">
-            <img :src="cart" alt="Carrito" class="cart" />
-          </router-link>
-        </li>
-      </ul>
-    </div>
-  </nav>
+        </v-tab>
+        <v-tab :value="1" @click="goToHome" :active="isRouteActive('/')"
+          >Inicio</v-tab
+        >
+        <v-tab
+          :value="3"
+          @click="goToLoginOrMyAccount"
+          :active="isRouteActive('/login') || isRouteActive('/myaccount')"
+          >{{ !isLoggedIn ? "Iniciar sesión" : "Mi cuenta" }}</v-tab
+        >
+        <v-tab
+          :value="4"
+          @click="goToSignupOrLogout"
+          :active="isRouteActive('/signup')"
+          >{{ !isLoggedIn ? "Registrarse" : "Cerrar sesión" }}</v-tab
+        >
+      </v-tabs>
+    </v-card>
+  </v-app-bar>
 </template>
 
 <style>
 .cart {
   width: 30px;
   height: 30px;
+  padding-top: 60px;
   object-fit: contain;
 }
 .nav-bar-logo {
@@ -67,7 +54,7 @@
   padding-left: 10px;
 }
 .custom-search-input {
-  width: 600px; /* Ajusta el ancho según tus necesidades */
+  padding-top: 20px;
 }
 </style>
 
@@ -82,6 +69,9 @@ export default {
     return {
       logo,
       cart,
+      searchInput: "",
+      drawer: false,
+      tab: null,
     };
   },
   computed: {
@@ -94,10 +84,46 @@ export default {
       return useUserStore();
     },
   },
+  watch: {
+    $route(to) {
+      if (to.path === "/") {
+        this.goToHome();
+      }
+    },
+  },
   methods: {
+    isRouteActive(route) {
+      return this.$route.path === route;
+    },
     handleLogout() {
       useUserStore().logout();
     },
+    goToHome() {
+      this.$router.push({ path: "/" });
+      this.tab = 1;
+    },
+    goToCart() {
+      this.tab = 2;
+    },
+    goToLoginOrMyAccount() {
+      if (this.isLoggedIn) {
+        this.$router.push({ path: "/myaccount" });
+      } else {
+        this.$router.push({ path: "/login" });
+      }
+      this.tab = 3;
+    },
+    goToSignupOrLogout() {
+      if (this.isLoggedIn) {
+        this.handleLogout();
+        this.$router.push({ path: "/" });
+        this.tab = 1;
+      } else {
+        this.$router.push({ path: "/signup" });
+        this.tab = 4;
+      }
+    },
+    searchProducts() {},
   },
 };
 </script>

@@ -11,7 +11,7 @@ export const useUserStore = defineStore({
   getters: {
     isLoggedIn: (state) => !!state.user,
     isAdmin: (state) => {
-      if (state.user) {
+      if (state.user.role === "admin") {
         return true;
       } else {
         return false;

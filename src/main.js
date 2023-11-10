@@ -15,13 +15,14 @@ import ProductDetailPage from "./pages/ProductDetailPage.vue";
 import HomePage from "./pages/HomePage.vue";
 import NotFoundPage from "./pages/NotFoundPage.vue";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage.vue";
-import AdminProductsPage from "./pages/admin/AdminProductsPage.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import SignUpPage from "./pages/SignUpPage.vue";
 import MyAccountPage from "./pages/MyAccountPage.vue";
 import { useCartStore } from "@/stores/cart";
 import { useUserStore } from "@/stores/user";
 import axios from "./axios";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "./firebase.js";
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHistory(process.env.BASE_URL),
@@ -64,33 +65,21 @@ const router = VueRouter.createRouter({
       component: AdminDashboardPage,
     },
     {
-      path: "/admin/products",
-      component: AdminProductsPage,
-    },
-    // {
-    //   path: "/admin/orders",
-    //   component: AdminOrders,
-    // },
-    {
       path: "/admin/*",
       component: NotFoundPage,
     },
   ],
 });
 
-// createApp(App)
-//   .use(createPinia())
-//   .provide("cartStore", useCartStore)
-//   .use(router)
-//   .mount("#app");
-
 const app = createApp(App);
+initializeApp(firebaseConfig);
 const pinia = createPinia();
 
 const vuetify = createVuetify({
   components,
   directives,
 });
+
 app.use(vuetify);
 app.use(pinia);
 
@@ -109,4 +98,5 @@ cartStore.loadCartFromLocalStorage();
 
 const userStore = useUserStore();
 userStore.loadUserFromLocalStorage();
+
 //cartStore.clearCart();
