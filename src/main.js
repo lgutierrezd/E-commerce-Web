@@ -90,7 +90,7 @@ app.use(router);
 app.mount("#app");
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://silent-blend-412918.uc.r.appspot.com";
 app.config.globalProperties.axios = axios;
 
 const cartStore = useCartStore();

@@ -53,8 +53,6 @@ export default {
       this.imageData = null;
     },
     onUpload() {
-      //this.img1 = null;
-
       const storage = getStorage();
       const storageRef = ref(storage, `${this.imageData.name}`);
       uploadBytes(storageRef, this.imageData).then(() => {

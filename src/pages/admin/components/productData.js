@@ -4,7 +4,7 @@ export const configProduct = {
   price: 0,
   productionPrice: 0,
   hexColor: "#FFFFFF",
-  description: "",
+  productDescription: "",
   isActive: true,
   images: [],
 };

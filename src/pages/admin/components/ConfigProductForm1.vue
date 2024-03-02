@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3>Nombre</h3>
     <v-text-field
       v-model="localProduct.name"
       label="Nombre"

@@ -27,7 +27,7 @@
                 outlined
               ></v-text-field>
               <v-text-field
-                v-model="localProduct.config[tab - 1].description"
+                v-model="localProduct.config[tab - 1].productDescription"
                 label="Descripcion del producto"
                 outlined
               ></v-text-field>
@@ -173,25 +173,30 @@ export default {
         const storage = getStorage();
         const storageRef = ref(
           storage,
-          `${slug}/config${config}_${slug}_index${index}`
+          `${slug}//config${config}_${slug}_index${index}`
         );
-
-        uploadBytes(storageRef, image.image)
+        console.log("storageRef storageRef storageRef", storageRef);
+        const uploadResult = uploadBytes(storageRef, image.image)
           .then(() => {
+            console.log("error 1");
             getDownloadURL(storageRef)
               .then((url) => {
+                console.log("error 2");
                 console.log("URL de descarga de la imagen:", url);
                 resolve(url); // Resuelve la promesa con la URL
               })
               .catch((error) => {
+                console.log("error 3");
                 console.error("Error al obtener la URL de descarga:", error);
                 reject(error); // Rechaza la promesa con el error
               });
           })
           .catch((error) => {
+            console.log("error 4");
             console.error("Error al cargar la imagen:", error);
             reject(error); // Rechaza la promesa con el error
           });
+        console.log("error 5", uploadResult);
       });
     },
     uploadImagesToFirebase(slug, config, images) {
@@ -213,7 +218,7 @@ export default {
         if (prom.length > 0) {
           // this.localProduct.config[config].images = [];
           this.localProduct.config[config].images = prom.slice();
-
+          console.log("this products", this.localProduct.config[config]);
           axios
             .post(
               `api/v1/products/config/${this.productReponse._id}`,

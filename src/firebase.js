@@ -6,12 +6,13 @@
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD4UX_jcZNqg7bElGE1XdjTHXsXJRvkeF8",
-  authDomain: "ecommerce-67472.firebaseapp.com",
-  projectId: "ecommerce-67472",
-  storageBucket: "ecommerce-67472.appspot.com",
-  messagingSenderId: "924696384227",
-  appId: "1:924696384227:web:98dc3530e7ef147eec6bd6",
+  apiKey: "AIzaSyBPZCSG9INty5NlclrqrewsQzBbgdJ4sBo",
+  authDomain: "ecommerce-feed9.firebaseapp.com",
+  projectId: "ecommerce-feed9",
+  storageBucket: "ecommerce-feed9.appspot.com",
+  messagingSenderId: "452988795438",
+  appId: "1:452988795438:web:0c6cd7e1b93bcdee403dbf",
+  measurementId: "G-0SHFMQ932T",
 };
 export { firebaseConfig };
 // Initialize Firebase

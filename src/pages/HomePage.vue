@@ -1,28 +1,7 @@
 <template>
   <div class="container">
     <h1>Productos</h1>
-    <div class="row">
-      <div v-for="product in products" :key="product._id" class="col-md-3">
-        <router-link
-          :to="{ name: 'ProductDetail', params: { id: product.slug } }"
-          class="card-link"
-        >
-          <div class="card border-white">
-            <img
-              class="card-img-top custom-image"
-              :src="product.images[0]"
-              alt="Producto"
-            />
-            <div class="card-body">
-              <h5 class="card-title text-left">{{ product.name }}</h5>
-              <p class="card-text text-left">
-                Precio: ${{ formattedNumber(product.price) }}
-              </p>
-            </div>
-          </div>
-        </router-link>
-      </div>
-    </div>
+    <div class="row"></div>
   </div>
 </template>
 

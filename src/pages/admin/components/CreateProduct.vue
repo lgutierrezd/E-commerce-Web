@@ -101,6 +101,7 @@ export default {
         this.product.suppliers = this.product.selectedSupplier.map(
           (ele) => ele._id
         );
+        console.log("this products", this.product);
         axios
           .post("api/v1/products", this.product, { withCredentials: true })
           .then((responses) => {
